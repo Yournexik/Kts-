@@ -1,0 +1,81 @@
+<?php
+$a = 10;
+$b = 0;
+
+try {
+    if ($b === 0) {
+        throw new DivisionByZeroError("Błąd: Nie można dzielić przez zero!");
+    }
+    $wynik = $a / $b;
+    echo "Wynik dzielenia: " . $wynik;
+} catch (DivisionByZeroError $e) {
+    echo "Złapano wyjątek: " . $e->getMessage();
+}
+?>
+
+<?php
+function sprawdzEmail($email) {
+    if (strpos($email, '@') === false) {
+        throw new InvalidArgumentException("Błąd: Adres e-mail musi zawierać znak '@'.");
+    }
+    return "Adres e-mail jest poprawny: " . $email;
+}
+
+try {
+    echo sprawdzEmail("testowy-adres.pl"); // Wywoła wyjątek
+} catch (InvalidArgumentException $e) {
+    echo "Złapano wyjątek: " . $e->getMessage();
+}
+?>
+
+<?php
+$nazwaPliku = "nieistniejacy_plik.txt";
+
+try {
+    if (!file_exists($nazwaPliku)) {
+        throw new RuntimeException("Błąd: Plik '$nazwaPliku' nie istnieje i nie można go otworzyć.");
+    }
+    $plik = fopen($nazwaPliku, "r");
+    // Dalsza obsługa pliku...
+    fclose($plik);
+} catch (RuntimeException $e) {
+    echo "Złapano wyjątek: " . $e->getMessage();
+}
+?>
+
+<?php
+try {
+    echo "Rozpoczęcie wykonywania kodu w bloku try.<br>";
+    // Symulacja losowego rzucenia wyjątku
+    if (rand(0, 1) === 1) {
+        throw new Exception("Wystąpił nieoczekiwany błąd!");
+    }
+    echo "Blok try zakończył się sukcesem.<br>";
+} catch (Exception $e) {
+    echo "Złapano wyjątek: " . $e->getMessage() . "<br>";
+} finally {
+    echo "<strong>Komunikat na koniec: Ten blok wykona się ZAWSZE, niezależnie od wyniku try/catch.</strong>";
+}
+?>
+
+<?php
+// Tworzenie własnej klasy wyjątku
+class BrakSrodkowException extends Exception {
+    public function errorMessage() {
+        return "Błąd własny [" . $this->getCode() . "]: " . $this->getMessage();
+    }
+}
+
+// Przykład użycia
+$stanKonta = 50;
+$cenaPrzedmiotu = 120;
+
+try {
+    if ($stanKonta < $cenaPrzedmiotu) {
+        throw new BrakSrodkowException("Nie masz wystarczająco dużo pieniędzy na koncie.", 402);
+    }
+    echo "Zakup udany!";
+} catch (BrakSrodkowException $e) {
+    echo $e->errorMessage();
+}
+?>
