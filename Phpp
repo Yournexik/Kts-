@@ -1,0 +1,19 @@
+<?php
+$host = 'localhost';
+$db   = 'nazwa_twojej_bazy';
+$user = 'root'; // domyślny użytkownik w XAMPP
+$pass = '';     // domyślne hasło w XAMPP jest puste
+
+try {
+    // Próba połączenia z bazą danych
+    $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
+    
+    // Ustawienie raportowania błędów jako wyjątki
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+    echo "Połączono z bazą danych pomyślnie!";
+} catch (PDOException $e) {
+    // Obsługa wyjątku, jeśli baza nie działa lub dane są złe
+    echo "Błąd połączenia: " . $e->getMessage();
+}
+?>
