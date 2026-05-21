@@ -1,0 +1,133 @@
+<?php
+
+// Wyjatki - moje rozwiazanie
+
+echo "=== WYJATKI W PHP ===\n\n";
+
+// Zadanie 1
+echo "1. Dzielenie liczb\n";
+
+function podziel($x, $y) {
+    if($y == 0) {
+        throw new Exception("Nie mozna dzielic przez zero!");
+    }
+    return $x / $y;
+}
+
+try {
+    echo "10 / 2 = " . podziel(10, 2) . "\n";
+    echo "20 / 4 = " . podziel(20, 4) . "\n";
+    echo "15 / 0 = " . podziel(15, 0) . "\n";
+} catch(Exception $e) {
+    echo "Blad: " . $e->getMessage() . "\n";
+}
+
+echo "\n";
+
+// Zadanie 2
+echo "2. Sprawdzanie emaili\n";
+
+function sprawdzEmail($email) {
+    if(strpos($email, "@") === false) {
+        throw new Exception("Nieprawidlowy email - brakuje @");
+    }
+    return "OK";
+}
+
+$lista = array(
+    "kazik.pedofil@gmail.com",
+    "maciek67@wp.pl",
+    "jowita.pochwalon@test.com",
+    "kubasik.gay@interia.pl",
+    "kazikpedofil",
+    "maciek67bezmalpy",
+    "jowitapochwalon",
+    "kubasikgay123"
+);
+
+foreach($lista as $mail) {
+    echo $mail . " -> ";
+    try {
+        sprawdzEmail($mail);
+        echo "Poprawny\n";
+    } catch(Exception $e) {
+        echo "Blad: " . $e->getMessage() . "\n";
+    }
+}
+
+echo "\n";
+
+// Zadanie 3
+echo "3. Otwieranie pliku\n";
+
+try {
+    $nazwaPliku = "dane.txt";
+    
+    if(!file_exists($nazwaPliku)) {
+        throw new Exception("Plik " . $nazwaPliku . " nie istnieje!");
+    }
+    
+    echo "Plik otwarty poprawnie\n";
+    
+} catch(Exception $e) {
+    echo "Blad: " . $e->getMessage() . "\n";
+} finally {
+    echo "Koniec operacji z plikiem\n";
+}
+
+echo "\n";
+
+// Zadanie 4
+echo "4. Try catch finally\n";
+
+try {
+    echo "Zaczynam sprawdzanie...\n";
+    
+    $wiek = 17;
+    if($wiek < 18) {
+        throw new Exception("Za malo lat!");
+    }
+    
+    echo "OK\n";
+    
+} catch(Exception $e) {
+    echo "Zlapano wyjatek: " . $e->getMessage() . "\n";
+} finally {
+    echo "Koniec sprawdzania\n";
+}
+
+echo "\n";
+
+// Zadanie 5
+echo "5. Wlasny wyjatek\n";
+
+class ZlyEmail extends Exception {
+    public function __construct($email) {
+        parent::__construct("Zly email: " . $email);
+    }
+}
+
+function dodajUzytkownika($imie, $email) {
+    if(strpos($email, "@") === false) {
+        throw new ZlyEmail($email);
+    }
+    echo $imie . " dodany poprawnie\n";
+}
+
+$dane = array(
+    array("Kazik pedofil", "kazik.pedofil@gmail.com"),
+    array("Maciek67", "maciek67bezmalpy"),
+    array("Jowita pochwalon", "jowita.pochwalon@test.com"),
+    array("Kubasik gay", "kubasik.gay@interia.pl")
+);
+
+foreach($dane as $osoba) {
+    try {
+        dodajUzytkownika($osoba[0], $osoba[1]);
+    } catch(ZlyEmail $e) {
+        echo "Blad: " . $e->getMessage() . "\n";
+    }
+}
+
+echo "\n=== Koniec ===\n";
+?>
