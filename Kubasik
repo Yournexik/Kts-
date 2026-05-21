@@ -1,0 +1,42 @@
+<?php
+
+$name = "Maciek";
+$age = 67;
+$country = "Polska";
+
+echo "Nazywam się $name, mam $age lat i mieszkam w $country<br>";
+
+$width = 8;
+$height = 5;
+
+$hmm = $width * $height;
+echo $hmm . "<br>";
+
+$value = 10;
+$value = $value + 1;
+echo $value . "<br>";
+
+$ismember = false;
+var_dump($ismember);
+echo "<br>";
+
+$a = 15;
+$b = 4;
+
+echo "Suma: " . ($a + $b) . "<br>";
+echo "Różnica: " . ($a - $b) . "<br>";
+echo "Iloczyn: " . ($a * $b) . "<br>";
+echo "Reszta z dzielenia: " . ($a % $b) . "<br>";
+
+// Druga część
+$age = 20;
+if($age >= 18) {
+    echo "Masz prawo do głosowania.<br>";
+}
+
+$temperature = -5;
+if($temperature < 0) {
+    echo "Jest zimno!";
+}
+
+?>
