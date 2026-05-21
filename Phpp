@@ -1,0 +1,97 @@
+<?php
+function podziel($a, $b) {
+    if ($b == 0) {
+        throw new DivisionByZeroError("Nie można dzielić przez zero!");
+    }
+    return $a / $b;
+}
+
+try {
+    echo podziel(10, 2) . "<br>";   // 5
+    echo podziel(8, 0);             // rzuci wyjątek
+} catch (DivisionByZeroError $e) {
+    echo "Błąd: " . $e->getMessage();
+} catch (Throwable $e) {
+    echo "Inny błąd: " . $e->getMessage();
+}
+?>
+
+<?php
+function sprawdzEmail($email) {
+    if (strpos($email, '@') === false) {
+        throw new Exception("Nieprawidłowy adres email - brakuje '@'.");
+    }
+    return "Email jest poprawny: " . $email;
+}
+
+try {
+    echo sprawdzEmail("jan@example.com") . "<br>";
+    echo sprawdzEmail("janekprzyklad.com"); // rzuci wyjątek
+} catch (Exception $e) {
+    echo "Błąd: " . $e->getMessage();
+}
+?>
+
+<?php
+try {
+    $plik = 'nieistniejacy_plik.txt';
+    
+    if (!file_exists($plik)) {
+        throw new Exception("Plik '$plik' nie istnieje!");
+    }
+    
+    $zawartosc = file_get_contents($plik);
+    echo $zawartosc;
+    
+} catch (Exception $e) {
+    echo "Błąd: " . $e->getMessage();
+} finally {
+    echo "<br>Próba otwarcia pliku została zakończona.";
+}
+?>
+
+<?php
+try {
+    echo "Rozpoczynam operację...<br>";
+    
+    // symulacja potencjalnego błędu
+    if (rand(0, 1)) {
+        throw new Exception("Wystąpił losowy błąd!");
+    }
+    
+    echo "Operacja zakończona pomyślnie.<br>";
+    
+} catch (Exception $e) {
+    echo "Złapano wyjątek: " . $e->getMessage() . "<br>";
+} finally {
+    echo "<strong>Zawsze wykonuję się na końcu - sprzątanie zakończone.</strong>";
+}
+?>
+
+<?php
+// Definicja własnego wyjątku
+class NieprawidlowyEmailException extends Exception {
+    public function __construct($email, $message = "Nieprawidłowy email", $code = 0) {
+        $fullMessage = $message . ": " . $email;
+        parent::__construct($fullMessage, $code);
+    }
+}
+
+// Użycie własnego wyjątku
+function zarejestrujUzytkownika($email) {
+    if (strpos($email, '@') === false) {
+        throw new NieprawidlowyEmailException($email, "Email nie zawiera znaku @");
+    }
+    echo "Użytkownik zarejestrowany: $email";
+}
+
+try {
+    zarejestrujUzytkownika("test@example.com");
+    zarejestrujUzytkownika("zlyemailbezmalpy");
+} catch (NieprawidlowyEmailException $e) {
+    echo "Specyficzny błąd email: " . $e->getMessage();
+} catch (Exception $e) {
+    echo "Inny błąd: " . $e->getMessage();
+}
+?>
+
